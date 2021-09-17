@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -25,10 +26,11 @@ public class Task {
     @Column
     private String title;
     @Column(name = "completed")
-    private Short completed;
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean completed;
 
     @Column(name = "task_date")
-    private Timestamp taskDate;
+    private Timestamp date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
