@@ -1,8 +1,6 @@
 package ru.avid.test.business.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.avid.test.business.entity.Task;
@@ -10,7 +8,6 @@ import ru.avid.test.business.repository.TaskRepository;
 import ru.avid.test.business.search.SearchTask;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,12 +32,10 @@ public class TaskService {
         return this.taskRepository.save(task);
     }
     public List<Task> find(SearchTask searchTask){
-//        return this.taskRepository.find(searchTask.getCategory(), searchTask.getPriority(), searchTask.getCompleted());
+        if (searchTask.getCompleted() == null){
+            return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriority());
+        }
         return this.taskRepository.find(searchTask);
-    }
-
-    public List<Task> findTest(SearchTask searchTask){
-        return this.taskRepository.findByCategory_TitleContainsAndPriority_TitleContainsAndCompleted(searchTask.getCategory(), searchTask.getPriority(), searchTask.getCompleted());
     }
 
 

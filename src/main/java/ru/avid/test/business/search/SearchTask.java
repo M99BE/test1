@@ -10,14 +10,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter @Getter
 public class SearchTask {
-    private String category = "";
+    private String title = "";
     private Boolean completed = false;
     private String priority = "";
 
-    @JsonSetter("category")
-    public void setCategory(String category) {
-        if (category != null)
-            this.category = category;
+    @JsonSetter("title")
+    public void setTitle(String title) {
+        if (title != null)
+            this.title = title;
     }
     @JsonSetter("completed")
     public void setCompleted(Boolean completed) {

@@ -32,7 +32,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 //            Pageable pageable
 //    );
     @Query("select t from Task t where " +
-            "(:#{#search.category} is null or :#{#search.category} = '' or lower(t.category.title) like lower(concat('%', :#{#search.category}, '%'))) and " +
+            "(:#{#search.title} is null or :#{#search.title} = '' or lower(t.title) like lower(concat('%', :#{#search.title}, '%'))) and " +
             "(:#{#search.priority} is null or :#{#search.priority} = '' or lower(t.priority.title) like lower(concat('%', :#{#search.priority}, '%'))) and " +
             "(:#{#search.completed} is null or t.completed=:#{#search.completed}) " +
             " order by t.title asc"
@@ -40,16 +40,23 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> find(@Param("search") SearchTask search);
 
     @Query("select t from Task t where " +
-            "(:category is null or :category = '' or lower(t.category.title) like lower(concat('%', :category, '%'))) and " +
+            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
             "(:priority is null or :priority = '' or lower(t.priority.title) like lower(concat('%', :priority, '%'))) and " +
             "(:completed is null or t.completed=:completed) " +
             " order by t.title asc"
     )
     List<Task> find(
-            @Param("category") String category,
+            @Param("title") String title,
             @Param("priority") String priority,
             @Param("completed") boolean completed
     );
-    List<Task> findByCategory_TitleAndPriority_TitleAndCompleted(String categoryTitle, String priorityTitle, boolean completed);
-    List<Task> findByCategory_TitleContainsAndPriority_TitleContainsAndCompleted(String categoryTitle, String priorityTitle, boolean completed);
+    @Query("select t from Task t where " +
+            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
+            "(:priority is null or :priority = '' or lower(t.priority.title) like lower(concat('%', :priority, '%'))) " +
+            " order by t.title asc"
+    )
+    List<Task> find(
+            @Param("title") String title,
+            @Param("priority") String priority
+    );
 }
