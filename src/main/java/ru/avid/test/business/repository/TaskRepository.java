@@ -50,6 +50,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             @Param("priority") String priority,
             @Param("completed") boolean completed
     );
+
     @Query("select t from Task t where " +
             "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
             "(:priority is null or :priority = '' or lower(t.priority.title) like lower(concat('%', :priority, '%'))) " +
