@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.avid.test.business.entity.Category;
 import ru.avid.test.business.repository.CategoryRepository;
+import ru.avid.test.business.search.SearchBase;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -30,8 +31,8 @@ public class CategoryService {
     public void delete(Long id){
         this.categoryRepository.deleteById(id);
     }
-    public List<Category> search(String title, String email){
-        return this.categoryRepository.find(title);
+    public List<Category> search(SearchBase search){
+        return this.categoryRepository.find(search);
     }
     public Category findById(Long id){
         return this.categoryRepository.findById(id).get();

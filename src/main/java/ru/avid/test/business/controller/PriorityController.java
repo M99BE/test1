@@ -7,58 +7,56 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.avid.test.business.entity.Category;
+import ru.avid.test.business.entity.Priority;
 import ru.avid.test.business.object.JsonException;
 import ru.avid.test.business.search.SearchBase;
-import ru.avid.test.business.service.CategoryService;
+import ru.avid.test.business.service.PriorityService;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping(value = "/category")
-public class CategoryController {
-    private CategoryService categoryService;
-
+@RequestMapping("/priority")
+public class PriorityController {
+    private PriorityService priorityService;
     @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public PriorityController(PriorityService priorityService) {
+        this.priorityService = priorityService;
     }
-
     @PostMapping("/all")
-    public ResponseEntity<List<Category>> findAll() {
-        return ResponseEntity.ok(this.categoryService.findAll(Sort.by(Sort.Direction.ASC, "title")));
+    public ResponseEntity<List<Priority>> findAll() {
+        return ResponseEntity.ok(this.priorityService.findAll(Sort.by(Sort.Direction.ASC, "title")));
     }
 
     @PutMapping("/add")
-    public ResponseEntity<Category> add(@RequestBody Category category) {
-        if (category == null) {
-            return new ResponseEntity("category is empty", HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<Priority> add(@RequestBody Priority priority) {
+        if (priority == null) {
+            return new ResponseEntity("priority is empty", HttpStatus.NOT_ACCEPTABLE);
         } else {
-            if (category.getId() != null && category.getId() != 0) {
+            if (priority.getId() != null && priority.getId() != 0) {
                 return new ResponseEntity("reduntal param: id must be null", HttpStatus.NOT_ACCEPTABLE);
             }
-            if (category.getTitle() == null || category.getTitle().trim().length() == 0) {
+            if (priority.getTitle() == null || priority.getTitle().trim().length() == 0) {
                 return new ResponseEntity("missing param: title", HttpStatus.NOT_ACCEPTABLE);
             }
 //            две строки ниже идентичны
 //            return new ResponseEntity(this.categoryService.add(category), HttpStatus.OK);
-            return ResponseEntity.ok(this.categoryService.addOrUpdate(category));
+            return ResponseEntity.ok(this.priorityService.addOrUpdate(priority));
         }
     }
 
     @PatchMapping("/update")
-    public ResponseEntity update(@RequestBody Category category) {
-        if (category == null) {
-            return new ResponseEntity("category is empty", HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity update(@RequestBody Priority priority) {
+        if (priority == null) {
+            return new ResponseEntity("priority is empty", HttpStatus.NOT_ACCEPTABLE);
         } else {
-            if (category.getId() == null || category.getId() == 0) {
+            if (priority.getId() == null || priority.getId() == 0) {
                 return new ResponseEntity("missing param: id", HttpStatus.NOT_ACCEPTABLE);
             }
-            if (category.getTitle() == null || category.getTitle().trim().length() == 0) {
+            if (priority.getTitle() == null || priority.getTitle().trim().length() == 0) {
                 return new ResponseEntity("missing param: title", HttpStatus.NOT_ACCEPTABLE);
             }
-            this.categoryService.addOrUpdate(category);
+            this.priorityService.addOrUpdate(priority);
             //объект не возвращаем так как он уже создан и только обновляется
             // и нет смысла его обраьно передавать
             return ResponseEntity.ok(HttpStatus.OK);
@@ -71,31 +69,31 @@ public class CategoryController {
             return new ResponseEntity("missing param: id", HttpStatus.NOT_ACCEPTABLE);
         }
         try {
-            this.categoryService.delete(id);
+            this.priorityService.delete(id);
         } catch (EmptyResultDataAccessException exception) {
             exception.printStackTrace();
             return new ResponseEntity("id =" + id + "not found", HttpStatus.NOT_ACCEPTABLE);
         }
         return ResponseEntity.ok(HttpStatus.OK);
     }
-//    @PostMapping("/search")
+    //    @PostMapping("/search")
 //    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues){
 //        return ResponseEntity.ok(this.categoryService.search(categorySearchValues.getTitle(), categorySearchValues.getEmail()));
 //    }
     @PostMapping("/id")
-    public ResponseEntity<Category> findById(@RequestBody Long id){
-        Category category = null;
+    public ResponseEntity<Priority> findById(@RequestBody Long id){
+        Priority priority = null;
         try {
-            category = this.categoryService.findById(id);
+            priority = this.priorityService.findById(id);
         } catch (NoSuchElementException ex){
             ex.printStackTrace();;
             return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(category);
+        return ResponseEntity.ok(priority);
     }
     @PostMapping("/search")
-    public ResponseEntity<List<Category>> search(@RequestBody SearchBase search){
-        return ResponseEntity.ok(this.categoryService.search(search));
+    public ResponseEntity<List<Priority>> search(@RequestBody SearchBase search){
+        return ResponseEntity.ok(this.priorityService.search(search));
     }
     /*
 Метод перехватывает все ошибки в контроллере

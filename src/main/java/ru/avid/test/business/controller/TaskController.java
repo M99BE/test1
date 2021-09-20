@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.avid.test.business.entity.Task;
 import ru.avid.test.business.object.JsonException;
+import ru.avid.test.business.search.SearchTask;
 import ru.avid.test.business.search.TaskSearchValues;
 import ru.avid.test.business.service.TaskService;
 
@@ -88,47 +89,52 @@ public class TaskController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues taskSearchValues){
-
-        String title = taskSearchValues.getTitle() != null ? taskSearchValues.getTitle() : null;
-        Integer completed = taskSearchValues.getCompleted() != null ? taskSearchValues.getCompleted() : null;
-        Long categoryId = taskSearchValues.getCategoryId() != null ? taskSearchValues.getCategoryId() : null;
-        String sortColumn = taskSearchValues.getSortColumn() != null ? taskSearchValues.getSortColumn() : null;
-        String sortDirection = taskSearchValues.getSortDirection() != null ? taskSearchValues.getSortDirection() : null;
-        Integer pageNumber = taskSearchValues.getPageNumber() != null ? taskSearchValues.getPageNumber() : 0;
-        Integer pageSize = taskSearchValues.getPageSize() != null ? taskSearchValues.getPageSize() : 10;
-
-        Date dateFrom = null;
-        Date dateTo = null;
-        if (taskSearchValues.getDateFrom() != null){
-            Calendar calendarFrom = Calendar.getInstance();
-            calendarFrom.setTime(taskSearchValues.getDateFrom());
-            calendarFrom.set(Calendar.HOUR_OF_DAY, 0);
-            calendarFrom.set(Calendar.MINUTE, 0);
-            calendarFrom.set(Calendar.SECOND, 0);
-            calendarFrom.set(Calendar.MILLISECOND, 0);
-            dateFrom = calendarFrom.getTime();
-        }
-        if (taskSearchValues.getFromTo() != null){
-            Calendar calendarFrom = Calendar.getInstance();
-            calendarFrom.setTime(taskSearchValues.getFromTo());
-            calendarFrom.set(Calendar.HOUR_OF_DAY, 23);
-            calendarFrom.set(Calendar.MINUTE, 59);
-            calendarFrom.set(Calendar.SECOND, 59);
-            calendarFrom.set(Calendar.MILLISECOND, 999);
-            dateTo = calendarFrom.getTime();
-        }
-        Sort.Direction direction = sortDirection == null || sortDirection.trim().length() == 0 || sortDirection.trim().equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-
-        if (sortColumn == null){
-            sortColumn = ID_COLUMN;
-        }
-
-        Sort sort = Sort.by(direction, sortColumn, ID_COLUMN);
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
-        Page<Task> result = this.taskService.find(title, completed, categoryId, dateFrom, dateTo, pageRequest);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<List<Task>> search(@RequestBody SearchTask search){
+        return ResponseEntity.ok(this.taskService.find(search));
     }
+
+//    @PostMapping("/search")
+//    public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues taskSearchValues){
+//
+//        String title = taskSearchValues.getTitle() != null ? taskSearchValues.getTitle() : null;
+//        Integer completed = taskSearchValues.getCompleted() != null ? taskSearchValues.getCompleted() : null;
+//        Long categoryId = taskSearchValues.getCategoryId() != null ? taskSearchValues.getCategoryId() : null;
+//        String sortColumn = taskSearchValues.getSortColumn() != null ? taskSearchValues.getSortColumn() : null;
+//        String sortDirection = taskSearchValues.getSortDirection() != null ? taskSearchValues.getSortDirection() : null;
+//        Integer pageNumber = taskSearchValues.getPageNumber() != null ? taskSearchValues.getPageNumber() : 0;
+//        Integer pageSize = taskSearchValues.getPageSize() != null ? taskSearchValues.getPageSize() : 10;
+//
+//        Date dateFrom = null;
+//        Date dateTo = null;
+//        if (taskSearchValues.getDateFrom() != null){
+//            Calendar calendarFrom = Calendar.getInstance();
+//            calendarFrom.setTime(taskSearchValues.getDateFrom());
+//            calendarFrom.set(Calendar.HOUR_OF_DAY, 0);
+//            calendarFrom.set(Calendar.MINUTE, 0);
+//            calendarFrom.set(Calendar.SECOND, 0);
+//            calendarFrom.set(Calendar.MILLISECOND, 0);
+//            dateFrom = calendarFrom.getTime();
+//        }
+//        if (taskSearchValues.getFromTo() != null){
+//            Calendar calendarFrom = Calendar.getInstance();
+//            calendarFrom.setTime(taskSearchValues.getFromTo());
+//            calendarFrom.set(Calendar.HOUR_OF_DAY, 23);
+//            calendarFrom.set(Calendar.MINUTE, 59);
+//            calendarFrom.set(Calendar.SECOND, 59);
+//            calendarFrom.set(Calendar.MILLISECOND, 999);
+//            dateTo = calendarFrom.getTime();
+//        }
+//        Sort.Direction direction = sortDirection == null || sortDirection.trim().length() == 0 || sortDirection.trim().equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+//
+//        if (sortColumn == null){
+//            sortColumn = ID_COLUMN;
+//        }
+//
+//        Sort sort = Sort.by(direction, sortColumn, ID_COLUMN);
+//        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+//        Page<Task> result = this.taskService.find(title, completed, categoryId, dateFrom, dateTo, pageRequest);
+//        return ResponseEntity.ok(result);
+//    }
 /*    Метод перехватывает все ошибки в контроллере
     Даже без этого метода все ошибки будут отправляться клиенту, просто здесь это можно кастомизировать, например отправить JSON в нужном формате
     Можно настроить, какие типы ошибок отправлять в явном виде, а какие нет (чтобы не давать лишнюю информацию злоумышленникам)

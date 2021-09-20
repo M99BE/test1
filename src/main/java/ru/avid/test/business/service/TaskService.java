@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.avid.test.business.entity.Task;
 import ru.avid.test.business.repository.TaskRepository;
+import ru.avid.test.business.search.SearchTask;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -20,6 +21,7 @@ public class TaskService {
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
+
     public List<Task> findAll(Sort sort){
         return this.taskRepository.findAll(sort);
     }
@@ -32,14 +34,23 @@ public class TaskService {
     public Task addOrUpdate(Task task){
         return this.taskRepository.save(task);
     }
-
-    public Page<Task> find(
-            String title,
-            Integer completed,
-            Long categoryId,
-            Date dateFrom,
-            Date dateTo,
-            PageRequest paging){
-        return this.taskRepository.find(title, completed, categoryId, dateFrom, dateTo, paging);
+    public List<Task> find(SearchTask searchTask){
+//        return this.taskRepository.find(searchTask.getCategory(), searchTask.getPriority(), searchTask.getCompleted());
+        return this.taskRepository.find(searchTask);
     }
+
+    public List<Task> findTest(SearchTask searchTask){
+        return this.taskRepository.findByCategory_TitleContainsAndPriority_TitleContainsAndCompleted(searchTask.getCategory(), searchTask.getPriority(), searchTask.getCompleted());
+    }
+
+
+//    public Page<Task> find(
+//            String title,
+//            Integer completed,
+//            Long categoryId,
+//            Date dateFrom,
+//            Date dateTo,
+//            PageRequest paging){
+//        return this.taskRepository.find(title, completed, categoryId, dateFrom, dateTo, paging);
+//    }
 }

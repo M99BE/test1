@@ -27,7 +27,7 @@ public class Task {
     private String title;
     @Column(name = "completed")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean completed;
+    private boolean completed;
 
     @Column(name = "task_date")
     private Timestamp date;
@@ -35,6 +35,10 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "priority_id", referencedColumnName = "id")
+    private Priority priority;
 
     @Override
     public boolean equals(Object o) {
