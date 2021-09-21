@@ -27,7 +27,7 @@ public class Task {
     private String title;
     @Column(name = "completed")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean completed;
+    private Boolean completed;
 
     @Column(name = "task_date")
     private Timestamp date;

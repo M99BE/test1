@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter @Getter
 public class SearchTask {
     private String title = "";
-    private Boolean completed = false;
+    private Boolean completed;
     private String priority = "";
 
     @JsonSetter("title")
@@ -19,11 +19,7 @@ public class SearchTask {
         if (title != null)
             this.title = title;
     }
-    @JsonSetter("completed")
-    public void setCompleted(Boolean completed) {
-        if (completed != null)
-            this.completed = completed;
-    }
+
     @JsonSetter("priority")
     public void setPriority(String priority) {
         if(priority != null)

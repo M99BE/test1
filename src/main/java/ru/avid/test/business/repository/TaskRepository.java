@@ -48,7 +48,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> find(
             @Param("title") String title,
             @Param("priority") String priority,
-            @Param("completed") boolean completed
+            @Param("completed") Boolean completed
     );
 
     @Query("select t from Task t where " +
@@ -60,4 +60,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             @Param("title") String title,
             @Param("priority") String priority
     );
+
 }
