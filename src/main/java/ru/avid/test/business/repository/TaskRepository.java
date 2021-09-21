@@ -33,32 +33,50 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 //    );
     @Query("select t from Task t where " +
             "(:#{#search.title} is null or :#{#search.title} = '' or lower(t.title) like lower(concat('%', :#{#search.title}, '%'))) and " +
-            "(:#{#search.priority} is null or :#{#search.priority} = '' or lower(t.priority.title) like lower(concat('%', :#{#search.priority}, '%'))) and " +
+            "(:#{#search.priorityId} is null or :#{#search.priorityId} = 0L or t.priority.id=:#{#search.priorityId}) and " +
             "(:#{#search.completed} is null or t.completed=:#{#search.completed}) " +
             " order by t.title asc"
     )
     List<Task> find(@Param("search") SearchTask search);
 
+//    @Query("select t from Task t where " +
+//            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
+//            "(:priority is null or :priority = '' or lower(t.priority.title) like lower(concat('%', :priority, '%'))) and " +
+//            "(:completed is null or t.completed=:completed) " +
+//            " order by t.title asc"
+//    )
+//    List<Task> find(
+//            @Param("title") String title,
+//            @Param("priority") String priority,
+//            @Param("completed") Boolean completed
+//    );
+
     @Query("select t from Task t where " +
             "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
-            "(:priority is null or :priority = '' or lower(t.priority.title) like lower(concat('%', :priority, '%'))) and " +
+            "(:priorityId is null or :priorityId = 0L or t.priority.id = :priorityId) " +
+            " order by t.title asc"
+    )
+    List<Task> find(
+            @Param("title") String title,
+            @Param("priorityId") Long priorityId
+    );
+
+    @Query("select t from Task t where " +
+            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
             "(:completed is null or t.completed=:completed) " +
             " order by t.title asc"
     )
     List<Task> find(
             @Param("title") String title,
-            @Param("priority") String priority,
             @Param("completed") Boolean completed
     );
 
     @Query("select t from Task t where " +
-            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
-            "(:priority is null or :priority = '' or lower(t.priority.title) like lower(concat('%', :priority, '%'))) " +
+            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) " +
             " order by t.title asc"
     )
     List<Task> find(
-            @Param("title") String title,
-            @Param("priority") String priority
+            @Param("title") String title
     );
 
 }

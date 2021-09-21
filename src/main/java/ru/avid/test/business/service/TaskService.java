@@ -32,8 +32,14 @@ public class TaskService {
         return this.taskRepository.save(task);
     }
     public List<Task> find(SearchTask searchTask){
-        if (searchTask.getCompleted() == null){
-            return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriority());
+        if (searchTask.getCompleted() == null && searchTask.getPriorityId() == null){
+            return this.taskRepository.find(searchTask.getTitle());
+        }
+        if (searchTask.getCompleted() == null && searchTask.getPriorityId() != null){
+            return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriorityId());
+        }
+        if (searchTask.getCompleted() != null && searchTask.getPriorityId() == null){
+            return this.taskRepository.find(searchTask.getTitle(), searchTask.getCompleted());
         }
         return this.taskRepository.find(searchTask);
     }
