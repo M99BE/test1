@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.avid.test.business.entity.Task;
 import ru.avid.test.business.object.JsonException;
+import ru.avid.test.business.object.StatsObject;
 import ru.avid.test.business.search.SearchTask;
 import ru.avid.test.business.search.TaskSearchValues;
 import ru.avid.test.business.service.TaskService;
@@ -143,5 +144,9 @@ public class TaskController {
     public ResponseEntity<JsonException> handleException(Exception exception) {
         // отправляем название класса ошибки (чтобы правильно обработать ошибку на клиенте)
         return new ResponseEntity(new JsonException(exception.getClass().getSimpleName()), HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping("/stats")
+    public ResponseEntity<StatsObject> getStat(@RequestBody SearchTask search){
+        return ResponseEntity.ok(this.taskService.getStat(search));
     }
 }

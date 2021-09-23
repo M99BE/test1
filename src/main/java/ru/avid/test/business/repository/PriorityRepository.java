@@ -16,4 +16,5 @@ public interface PriorityRepository extends JpaRepository<Priority, Long> {
             " order by p.title asc"
     )
     List<Priority> find(@Param("search") SearchBase search);
+
 }

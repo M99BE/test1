@@ -33,6 +33,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 //    );
     @Query("select t from Task t where " +
             "(:#{#search.title} is null or :#{#search.title} = '' or lower(t.title) like lower(concat('%', :#{#search.title}, '%'))) and " +
+            "(:#{#search.categoryTitle} is null or :#{#search.categoryTitle} = '' or lower(t.category.title) like lower(concat('%', :#{#search.categoryTitle}, '%'))) and " +
             "(:#{#search.priorityId} is null or :#{#search.priorityId} = 0L or t.priority.id=:#{#search.priorityId}) and " +
             "(:#{#search.completed} is null or t.completed=:#{#search.completed}) " +
             " order by t.title asc"
@@ -78,5 +79,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> find(
             @Param("title") String title
     );
-
+    Integer countTaskByCategory_Title(String title);
+    Integer countTaskByCategory_TitleAndCompleted(String title, Boolean completed);
+    Integer countTaskByCompleted(Boolean completed);
 }
