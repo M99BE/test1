@@ -78,5 +78,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> find(
             @Param("title") String title
     );
-
+    Integer countTaskByCategory_Title(String title);
+    Integer countTaskByCategory_TitleAndCompleted(String title, Boolean completed);
+    Integer countAllByCompleted(Boolean completed);
 }

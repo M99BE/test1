@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.avid.test.business.entity.Task;
+import ru.avid.test.business.object.Stat;
 import ru.avid.test.business.repository.TaskRepository;
 import ru.avid.test.business.search.SearchTask;
 
@@ -44,6 +45,13 @@ public class TaskService {
         return this.taskRepository.find(searchTask);
     }
 
+    public Stat getStat(String categoryTitle){
+        Stat stat = new Stat();
+        stat.setTotalTask(this.taskRepository.findAll().size());
+        stat.setTotalCategoryTask(this.taskRepository.countTaskByCategory_Title(categoryTitle));
+        stat.setCompletedTask(this.taskRepository.countAllByCompleted(true));
+        return stat;
+    }
 
 //    public Page<Task> find(
 //            String title,

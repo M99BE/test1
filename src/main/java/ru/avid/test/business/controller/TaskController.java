@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.avid.test.business.entity.Task;
 import ru.avid.test.business.object.JsonException;
+import ru.avid.test.business.object.Stat;
 import ru.avid.test.business.search.SearchTask;
 import ru.avid.test.business.search.TaskSearchValues;
 import ru.avid.test.business.service.TaskService;
@@ -86,6 +87,10 @@ public class TaskController {
             return new ResponseEntity("id=" + id + " not found", HttpStatus.NOT_ACCEPTABLE);
         }
         return ResponseEntity.ok(task);
+    }
+    @PostMapping("/stat")
+    public ResponseEntity<Stat> getStat(@RequestBody String categoryTitle){
+        return ResponseEntity.ok(this.taskService.getStat(categoryTitle));
     }
 
     @PostMapping("/search")
