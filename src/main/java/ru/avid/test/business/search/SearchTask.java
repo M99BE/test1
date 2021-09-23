@@ -13,11 +13,16 @@ public class SearchTask {
     private String title = "";
     private Boolean completed;
     private Long priorityId ;
+    private String categoryTitle = "";
 
     @JsonSetter("title")
     public void setTitle(String title) {
         if (title != null)
             this.title = title;
     }
-
+    @JsonSetter("categoryTitle")
+    public void setCategoryTitle(String categoryTitle) {
+        if (categoryTitle != null)
+            this.categoryTitle = categoryTitle;
+    }
 }

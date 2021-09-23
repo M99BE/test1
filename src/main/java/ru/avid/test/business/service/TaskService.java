@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.avid.test.business.entity.Task;
-import ru.avid.test.business.object.Stat;
+import ru.avid.test.business.object.StatsObject;
 import ru.avid.test.business.repository.TaskRepository;
 import ru.avid.test.business.search.SearchTask;
 
@@ -32,27 +32,40 @@ public class TaskService {
     public Task addOrUpdate(Task task){
         return this.taskRepository.save(task);
     }
+
     public List<Task> find(SearchTask searchTask){
-        if (searchTask.getCompleted() == null && searchTask.getPriorityId() == null){
+        if (searchTask.getCompleted() == null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
             return this.taskRepository.find(searchTask.getTitle());
         }
-        if (searchTask.getCompleted() == null && searchTask.getPriorityId() != null){
+        if (searchTask.getCompleted() == null && searchTask.getPriorityId() != null && searchTask.getCategoryTitle() == null){
             return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriorityId());
         }
-        if (searchTask.getCompleted() != null && searchTask.getPriorityId() == null){
+        if (searchTask.getCompleted() != null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
             return this.taskRepository.find(searchTask.getTitle(), searchTask.getCompleted());
         }
         return this.taskRepository.find(searchTask);
     }
 
-    public Stat getStat(String categoryTitle){
-        Stat stat = new Stat();
-        stat.setTotalTask(this.taskRepository.findAll().size());
-        stat.setTotalCategoryTask(this.taskRepository.countTaskByCategory_Title(categoryTitle));
-        stat.setCompletedTask(this.taskRepository.countAllByCompleted(true));
+    public StatsObject getStat(SearchTask search){
+        StatsObject stat = new StatsObject();
+        int countCategoryTask;
+
+        int totalTask = countCategoryTask = this.taskRepository.findAll().size();
+        stat.setTotalTask(totalTask);
+
+        if (search.getCategoryTitle().trim().length() == 0) {
+            countCategoryTask = totalTask;
+            stat.setCompletedTask(this.taskRepository.countTaskByCompleted(true));
+            stat.setUncompletedTask(this.taskRepository.countTaskByCompleted(false));
+
+        } else {
+            countCategoryTask = this.taskRepository.countTaskByCategory_Title(search.getCategoryTitle());
+            stat.setCompletedTask(this.taskRepository.countTaskByCategory_TitleAndCompleted(search.getCategoryTitle(), true));
+            stat.setUncompletedTask(this.taskRepository.countTaskByCategory_TitleAndCompleted(search.getCategoryTitle(), false));
+        }
+        stat.setTotalCategoryTask(countCategoryTask);
         return stat;
     }
-
 //    public Page<Task> find(
 //            String title,
 //            Integer completed,
