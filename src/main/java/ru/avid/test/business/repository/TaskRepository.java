@@ -14,23 +14,20 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    //    @Query("select t from Task t where " +
-//            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
-//            "(:completed is null or t.completed=:completed) and " +
-//            "(:categoryId is null or t.category.id=:categoryId) and " +
-//            "(" +
-//            "(cast(:dateFrom as timestamp) is null or t.date>=:dateFrom) and " +
-//            "(cast(:dateTo as timestamp) is null or t.date<=:dateTo)" +
-//            ")"
-//    )
-//    Page<Task> find(
-//            @Param("title") String title,
-//            @Param("completed") Integer completed,
-//            @Param("categoryId") Long categoryId,
-//            @Param("dateFrom") Date dateFrom,
-//            @Param("dateTo") Date dateTo,
-//            Pageable pageable
-//    );
+        @Query("select t from Task t where " +
+                "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
+                "(:categoryTitle is null or :categoryTitle = '' or lower(t.category.title) like lower(:categoryTitle)) and " +
+                "(:priorityId is null or :priorityId = 0L or t.priority.id = :priorityId) and " +
+                "(:completed is null or t.completed=:completed) "
+    )
+    Page<Task> find(
+                @Param("title") String title,
+                @Param("categoryTitle") String categoryTitle,
+                @Param("priorityId") Long priorityId,
+                @Param("completed") Boolean completed,
+            Pageable pageable
+    );
+
     @Query("select t from Task t where " +
             "(:#{#search.title} is null or :#{#search.title} = '' or lower(t.title) like lower(concat('%', :#{#search.title}, '%'))) and " +
             "(:#{#search.categoryTitle} is null or :#{#search.categoryTitle} = '' or lower(t.category.title) like lower(concat('%', :#{#search.categoryTitle}, '%'))) and " +
@@ -40,17 +37,19 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     )
     List<Task> find(@Param("search") SearchTask search);
 
-//    @Query("select t from Task t where " +
-//            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
-//            "(:priority is null or :priority = '' or lower(t.priority.title) like lower(concat('%', :priority, '%'))) and " +
-//            "(:completed is null or t.completed=:completed) " +
-//            " order by t.title asc"
-//    )
-//    List<Task> find(
-//            @Param("title") String title,
-//            @Param("priority") String priority,
-//            @Param("completed") Boolean completed
-//    );
+    @Query("select t from Task t where " +
+            "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +
+            "(:categoryTitle is null or :categoryTitle = '' or lower(t.category.title) like lower(:categoryTitle)) and " +
+            "(:priorityId is null or :priorityId = 0L or t.priority.id = :priorityId) and " +
+            "(:completed is null or t.completed=:completed) " +
+            " order by t.title asc"
+    )
+    List<Task> find(
+            @Param("title") String title,
+            @Param("categoryTitle") String categoryTitle,
+            @Param("priorityId") Long priorityId,
+            @Param("completed") Boolean completed
+    );
 
     @Query("select t from Task t where " +
             "(:title is null or :title = '' or lower(t.title) like lower(concat('%', :title, '%'))) and " +

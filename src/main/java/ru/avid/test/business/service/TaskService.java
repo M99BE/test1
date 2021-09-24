@@ -1,6 +1,8 @@
 package ru.avid.test.business.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.avid.test.business.entity.Task;
@@ -34,16 +36,17 @@ public class TaskService {
     }
 
     public List<Task> find(SearchTask searchTask){
-        if (searchTask.getCompleted() == null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
-            return this.taskRepository.find(searchTask.getTitle());
-        }
-        if (searchTask.getCompleted() == null && searchTask.getPriorityId() != null && searchTask.getCategoryTitle() == null){
-            return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriorityId());
-        }
-        if (searchTask.getCompleted() != null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
-            return this.taskRepository.find(searchTask.getTitle(), searchTask.getCompleted());
-        }
-        return this.taskRepository.find(searchTask);
+//        if (searchTask.getCompleted() == null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
+//            return this.taskRepository.find(searchTask.getTitle());
+//        }
+//        if (searchTask.getCompleted() == null && searchTask.getPriorityId() != null && searchTask.getCategoryTitle() == null){
+//            return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriorityId());
+//        }
+//        if (searchTask.getCompleted() != null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
+//            return this.taskRepository.find(searchTask.getTitle(), searchTask.getCompleted());
+//        }
+//        return this.taskRepository.find(searchTask);
+        return this.taskRepository.find(searchTask.getTitle(), searchTask.getCategoryTitle(), searchTask.getPriorityId(), searchTask.getCompleted());
     }
 
     public StatsObject getStat(SearchTask search){
@@ -66,13 +69,9 @@ public class TaskService {
         stat.setTotalCategoryTask(countCategoryTask);
         return stat;
     }
-//    public Page<Task> find(
-//            String title,
-//            Integer completed,
-//            Long categoryId,
-//            Date dateFrom,
-//            Date dateTo,
-//            PageRequest paging){
-//        return this.taskRepository.find(title, completed, categoryId, dateFrom, dateTo, paging);
-//    }
+    public Page<Task> find(
+            SearchTask searchTask,
+            PageRequest paging){
+        return this.taskRepository.find(searchTask.getTitle(), searchTask.getCategoryTitle(), searchTask.getPriorityId(), searchTask.getCompleted(), paging);
+    }
 }
