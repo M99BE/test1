@@ -34,16 +34,17 @@ public class TaskService {
     }
 
     public List<Task> find(SearchTask searchTask){
-        if (searchTask.getCompleted() == null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
-            return this.taskRepository.find(searchTask.getTitle());
-        }
-        if (searchTask.getCompleted() == null && searchTask.getPriorityId() != null && searchTask.getCategoryTitle() == null){
-            return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriorityId());
-        }
-        if (searchTask.getCompleted() != null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
-            return this.taskRepository.find(searchTask.getTitle(), searchTask.getCompleted());
-        }
-        return this.taskRepository.find(searchTask);
+//        if (searchTask.getCompleted() == null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
+//            return this.taskRepository.find(searchTask.getTitle());
+//        }
+//        if (searchTask.getCompleted() == null && searchTask.getPriorityId() != null && searchTask.getCategoryTitle() == null){
+//            return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriorityId());
+//        }
+//        if (searchTask.getCompleted() != null && searchTask.getPriorityId() == null && searchTask.getCategoryTitle() == null){
+//            return this.taskRepository.find(searchTask.getTitle(), searchTask.getCompleted());
+//        }
+//        return this.taskRepository.find(searchTask);
+        return this.taskRepository.find(searchTask.getTitle(), searchTask.getPriorityId(), searchTask.getCategoryTitle(), searchTask.getCompleted());
     }
 
     public StatsObject getStat(SearchTask search){
