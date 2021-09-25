@@ -78,10 +78,7 @@ public class CategoryController {
         }
         return ResponseEntity.ok(HttpStatus.OK);
     }
-//    @PostMapping("/search")
-//    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues){
-//        return ResponseEntity.ok(this.categoryService.search(categorySearchValues.getTitle(), categorySearchValues.getEmail()));
-//    }
+
     @PostMapping("/id")
     public ResponseEntity<Category> findById(@RequestBody Long id){
         Category category = null;

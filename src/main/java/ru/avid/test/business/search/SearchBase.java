@@ -10,6 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter @Getter
 public class SearchBase {
+    private Integer pageNumber;
+    private Integer pageSize;
+
+    private String sortColumn;
+    private String sortDirection;
+
     private String title = "";
     @JsonSetter("title")
     public void setTitle(String title) {

@@ -12,7 +12,6 @@ import ru.avid.test.business.entity.Task;
 import ru.avid.test.business.object.JsonException;
 import ru.avid.test.business.object.StatsObject;
 import ru.avid.test.business.search.SearchTask;
-import ru.avid.test.business.search.TaskSearchValues;
 import ru.avid.test.business.service.TaskService;
 
 import java.util.Calendar;
