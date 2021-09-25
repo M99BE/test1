@@ -15,6 +15,12 @@ public class SearchTask {
     private Long priorityId ;
     private String categoryTitle = "";
 
+    private Integer pageNumber;
+    private Integer pageSize;
+
+    private String sortColumn;
+    private String sortDirection;
+
     @JsonSetter("title")
     public void setTitle(String title) {
         if (title != null)
