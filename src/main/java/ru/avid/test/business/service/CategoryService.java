@@ -4,21 +4,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.avid.test.business.entity.Category;
+import ru.avid.test.business.object.CategoryStat;
 import ru.avid.test.business.repository.CategoryRepository;
+import ru.avid.test.business.repository.TaskRepository;
 import ru.avid.test.business.search.SearchBase;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class CategoryService {
-    @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
-
     private CategoryRepository categoryRepository;
+    private TaskRepository taskRepository;
+
+    @Autowired
+    public CategoryService(
+            CategoryRepository categoryRepository,
+            TaskRepository taskRepository) {
+        this.categoryRepository = categoryRepository;
+        this.taskRepository = taskRepository;
+    }
 
     public List<Category> findAll(Sort sort){
         return this.categoryRepository.findAll(sort);
@@ -31,9 +38,21 @@ public class CategoryService {
     public void delete(Long id){
         this.categoryRepository.deleteById(id);
     }
+
     public List<Category> search(SearchBase search){
         return this.categoryRepository.find(search);
     }
+
+    public List<CategoryStat> searchStat(SearchBase search){
+        List<Category> categories = this.categoryRepository.find(search);
+        List<CategoryStat> categoryStats = new ArrayList<>();;
+        for (Category iter: categories) {
+            int countTask = this.taskRepository.countTaskByCategory_Title(iter.getTitle());
+            categoryStats.add(new CategoryStat(iter, countTask));
+        }
+        return categoryStats;
+    }
+
     public Category findById(Long id){
         return this.categoryRepository.findById(id).get();
     }
