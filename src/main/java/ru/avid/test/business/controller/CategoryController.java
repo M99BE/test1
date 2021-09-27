@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.avid.test.business.entity.Category;
+import ru.avid.test.business.object.CategoryStat;
 import ru.avid.test.business.object.JsonException;
 import ru.avid.test.business.search.SearchBase;
 import ru.avid.test.business.service.CategoryService;
@@ -97,6 +98,12 @@ public class CategoryController {
     public ResponseEntity<List<Category>> search(@RequestBody SearchBase search){
         return ResponseEntity.ok(this.categoryService.search(search));
     }
+
+    @PostMapping("/search-stat")
+    public ResponseEntity<List<CategoryStat>> searchStat(@RequestBody SearchBase search){
+        return ResponseEntity.ok(this.categoryService.searchStat(search));
+    }
+
     /*
 Метод перехватывает все ошибки в контроллере
 Даже без этого метода все ошибки будут отправляться клиенту, просто здесь это можно кастомизировать, например отправить JSON в нужном формате
