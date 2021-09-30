@@ -5,6 +5,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.avid.test.business.entity.Category;
 import ru.avid.test.business.object.CategoryStat;
@@ -31,6 +32,7 @@ public class CategoryController {
         return ResponseEntity.ok(this.categoryService.findAll(Sort.by(Sort.Direction.ASC, "title")));
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/add")
     public ResponseEntity<Category> add(@RequestBody Category category) {
         if (category == null) {
@@ -47,7 +49,7 @@ public class CategoryController {
             return ResponseEntity.ok(this.categoryService.addOrUpdate(category));
         }
     }
-
+    @PreAuthorize("hasAuthority('USER')")
     @PatchMapping("/update")
     public ResponseEntity update(@RequestBody Category category) {
         if (category == null) {
@@ -65,7 +67,7 @@ public class CategoryController {
             return ResponseEntity.ok(HttpStatus.OK);
         }
     }
-
+    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/delete")
     public ResponseEntity delete(@RequestBody Long id) {
         if(id == null || id == 0){
@@ -83,6 +85,7 @@ public class CategoryController {
 //    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues){
 //        return ResponseEntity.ok(this.categoryService.search(categorySearchValues.getTitle(), categorySearchValues.getEmail()));
 //    }
+@PreAuthorize("hasAuthority('USER')")
     @PostMapping("/id")
     public ResponseEntity<Category> findById(@RequestBody Long id){
         Category category = null;
@@ -94,11 +97,12 @@ public class CategoryController {
         }
         return ResponseEntity.ok(category);
     }
+    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/search")
     public ResponseEntity<List<Category>> search(@RequestBody SearchBase search){
         return ResponseEntity.ok(this.categoryService.search(search));
     }
-
+    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/search-stat")
     public ResponseEntity<List<CategoryStat>> searchStat(@RequestBody SearchBase search){
         return ResponseEntity.ok(this.categoryService.searchStat(search));
