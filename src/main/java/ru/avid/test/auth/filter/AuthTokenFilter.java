@@ -55,8 +55,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             "resend-activate-email", // запрос о повторной отправки письма активации
             "send-reset-password-email", // запрос на отправку письма об обновлении пароля
             "test-no-auth", // если есть какой-либо тестовый URL для проверки работы backend
-            "index" // если есть отдельная главная страница
-
+            "index", // если есть отдельная главная страница
+            "task",
+            "priority",
+            "category"
             // можно добавлять сюда любые открытые URL
     );
 

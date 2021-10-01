@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.avid.test.auth.entity.User;
 
 import javax.persistence.*;
 import javax.print.attribute.HashDocAttributeSet;
@@ -25,6 +26,9 @@ public class Category {
     private Long id;
     @Column(name = "title")
     private String title;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id") // по каким полям связывать (foreign key)
+    private User user;
     @OneToMany(
             mappedBy = "category",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}
@@ -39,6 +43,7 @@ public class Category {
         tasks.remove(task);
         task.setCategory(null);
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -79,7 +79,7 @@ public class AuthController {
 
     // выход из системы - мы должны занулить (удалить) кук с jwt (пользователю придется заново логиниться при след. входе)
     @PostMapping("/logout")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER') or hasAnyAuthority('ADMIN')")
     public ResponseEntity logout() { // body отсутствует (ничего не передаем от клиента) - все данные пользователя передаются с куком
 
 
@@ -264,7 +264,21 @@ public class AuthController {
         return ResponseEntity.ok(updatedCount == 1); // 1 - значит запись обновилась успешно, 0 - что-то пошло не так
     }
 
+    /*
+       Если пользователь на клиенте уже ранее авторизовался - то при каждом следующем запросе на любую закрытую страницу - будет вызывать этот метод.
+       В этом методе мы только отправляем данные пользователя обратно клиенту (имя, почта, роли и пр.)
+       Самое главное - перед тем, как запрос попадет в этот метод, он пройдет фильтр AuthTokenFilter, который убедится, что кук jwt найден и корректный - и автоматически авторизует пользователя.
+    */
+    @PostMapping("/auto")
+    public ResponseEntity<User> autoLogin() { // body отсутствует (ничего не передаем от клиента)
 
+        // получаем данные пользователя из Spring контейнера
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // залогинился успешно (jwt и сами данные пользователя будут добавляться в response в фильтре AuthTokenFilter)
+        return ResponseEntity.ok().body(userDetails.getUser());
+
+    }
 
     /*
 
