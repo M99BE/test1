@@ -2,11 +2,11 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'war'
+//    id 'war'
 }
-war {
-    enabled = true
-}
+//war {
+//    enabled = true
+//}
 group = 'ru.avid'
 version = '1.0.1'
 sourceCompatibility = '1.8'
@@ -40,7 +40,7 @@ dependencies {
     compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
