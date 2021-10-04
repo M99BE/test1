@@ -141,7 +141,7 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
         http.formLogin().disable(); // отключаем, не нужна для RESTful API, т.к. форма авторизации создается не на SpringMVC, а на SPA или других технологиях
         http.httpBasic().disable(); // отключаем стандартную браузерную форму авторизации, не нужна, т.к. форма авторизации будет на клиенте
 
-//        http.requiresChannel().anyRequest().requiresSecure(); // обязательное исп. HTTPS для всех запросах
+        http.requiresChannel().anyRequest().requiresSecure(); // обязательное исп. HTTPS для всех запросах
 
         // authTokenFilter - валидация JWT, до того, как запрос попадет в контроллер
         http.addFilterBefore(authTokenFilter, SessionManagementFilter.class); // добавляем наш фильтр в securityfilterchain
