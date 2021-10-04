@@ -31,10 +31,6 @@ import ru.avid.test.auth.service.UserDetailsServiceImpl;
 public class SpringConfig extends WebSecurityConfigurerAdapter {
     @Value("${client.url}")
     private String clientURL;
-    @Value("${client.url1}")
-    private String clientURL1;
-    @Value("${client.url2}")
-    private String clientURL2;
 
     // для получения пользователя из БД
     private UserDetailsServiceImpl userDetailsService;
@@ -67,7 +63,7 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**"). // все URL
 //                        allowedOrigins("*").
-                        allowedOrigins(clientURL, clientURL1, clientURL2). // с каких адресов разрешать запросы (можно указывать через зяпятую) // Todo для отладки frontend
+                        allowedOrigins(clientURL). // с каких адресов разрешать запросы (можно указывать через зяпятую) // Todo для отладки frontend
                         allowCredentials(true). // разрешить отправлять куки для межсайтового запроса
                         allowedHeaders("*"). // разрешить все заголовки
                         allowedMethods("*"); // разрешить все HTTP методы
