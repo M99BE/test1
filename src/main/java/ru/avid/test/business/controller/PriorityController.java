@@ -5,6 +5,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.avid.test.business.entity.Category;
 import ru.avid.test.business.entity.Priority;
@@ -23,11 +24,13 @@ public class PriorityController {
     public PriorityController(PriorityService priorityService) {
         this.priorityService = priorityService;
     }
+
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/all")
     public ResponseEntity<List<Priority>> findAll() {
         return ResponseEntity.ok(this.priorityService.findAll(Sort.by(Sort.Direction.ASC, "title")));
     }
-
+//    @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/add")
     public ResponseEntity<Priority> add(@RequestBody Priority priority) {
         if (priority == null) {
@@ -44,7 +47,7 @@ public class PriorityController {
             return ResponseEntity.ok(this.priorityService.addOrUpdate(priority));
         }
     }
-
+//    @PreAuthorize("hasAuthority('USER')")
     @PatchMapping("/update")
     public ResponseEntity update(@RequestBody Priority priority) {
         if (priority == null) {
@@ -62,7 +65,7 @@ public class PriorityController {
             return ResponseEntity.ok(HttpStatus.OK);
         }
     }
-
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/delete")
     public ResponseEntity delete(@RequestBody Long id) {
         if(id == null || id == 0){
@@ -76,6 +79,11 @@ public class PriorityController {
         }
         return ResponseEntity.ok(HttpStatus.OK);
     }
+    //    @PostMapping("/search")
+//    public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues){
+//        return ResponseEntity.ok(this.categoryService.search(categorySearchValues.getTitle(), categorySearchValues.getEmail()));
+//    }
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/id")
     public ResponseEntity<Priority> findById(@RequestBody Long id){
         Priority priority = null;
@@ -87,10 +95,12 @@ public class PriorityController {
         }
         return ResponseEntity.ok(priority);
     }
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/search")
     public ResponseEntity<List<Priority>> search(@RequestBody SearchBase search){
         return ResponseEntity.ok(this.priorityService.search(search));
     }
+
     /*
 Метод перехватывает все ошибки в контроллере
 Даже без этого метода все ошибки будут отправляться клиенту, просто здесь это можно кастомизировать, например отправить JSON в нужном формате

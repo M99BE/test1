@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
+import ru.avid.test.auth.entity.User;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -39,6 +40,10 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "priority_id", referencedColumnName = "id")
     private Priority priority;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id") // по каким полям связывать (foreign key)
+    private User user;
 
     @Override
     public boolean equals(Object o) {

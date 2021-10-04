@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface PriorityRepository extends JpaRepository<Priority, Long> {
     @Query( "SELECT p from Priority p where " +
+            "(:#{#search.userId} = 0L or p.user.id = :#{#search.userId}) and " +
             "(:#{#search.title} is null or :#{#search.title} = '' or lower(p.title) like lower(concat('%', :#{#search.title}, '%'))) " +
             " order by p.title asc"
     )

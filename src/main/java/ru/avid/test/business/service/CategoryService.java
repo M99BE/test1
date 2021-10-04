@@ -18,7 +18,6 @@ import java.util.List;
 public class CategoryService {
     private CategoryRepository categoryRepository;
     private TaskRepository taskRepository;
-
     @Autowired
     public CategoryService(
             CategoryRepository categoryRepository,
@@ -38,21 +37,17 @@ public class CategoryService {
     public void delete(Long id){
         this.categoryRepository.deleteById(id);
     }
-
     public List<Category> search(SearchBase search){
         return this.categoryRepository.find(search);
     }
-
     public List<CategoryStat> searchStat(SearchBase search){
-        List<Category> categories = this.categoryRepository.find(search);
-        List<CategoryStat> categoryStats = new ArrayList<>();;
-        for (Category iter: categories) {
-            int countTask = this.taskRepository.countTaskByCategory_Title(iter.getTitle());
-            categoryStats.add(new CategoryStat(iter, countTask));
+        List<CategoryStat> categoryStatList = new ArrayList<>();
+        List<Category> categoryList = this.categoryRepository.find(search);
+        for (Category iter: categoryList) {
+            categoryStatList.add(new CategoryStat(iter, this.taskRepository.countTaskByCategory_TitleAndUser_Id(iter.getTitle(), search.getUserId())));
         }
-        return categoryStats;
+        return categoryStatList;
     }
-
     public Category findById(Long id){
         return this.categoryRepository.findById(id).get();
     }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.avid.test.business.entity.Task;
 import ru.avid.test.business.object.JsonException;
@@ -30,10 +31,13 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/all")
     public ResponseEntity<List<Task>> findAll(){
         return ResponseEntity.ok(this.taskService.findAll(Sort.by(Sort.Direction.ASC, "title")));
     }
+
+//    @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/add")
     public ResponseEntity<Task> add(@RequestBody Task task){
         if (task == null){
@@ -48,6 +52,7 @@ public class TaskController {
         }
         return ResponseEntity.ok(this.taskService.addOrUpdate(task));
     }
+//    @PreAuthorize("hasAuthority('USER')")
     @PatchMapping("/update")
     public ResponseEntity update(@RequestBody Task task){
         if (task == null){
@@ -63,6 +68,7 @@ public class TaskController {
             return ResponseEntity.ok(HttpStatus.OK);
         }
     }
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/delete")
     public ResponseEntity delete(@RequestBody Long id){
         if (id == null || id == 0){
@@ -76,6 +82,7 @@ public class TaskController {
         }
         return ResponseEntity.ok(HttpStatus.OK);
     }
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/id")
     public ResponseEntity<Task> findById(@RequestBody Long id){
         Task task = null;
@@ -87,12 +94,12 @@ public class TaskController {
         }
         return ResponseEntity.ok(task);
     }
-
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/search")
     public ResponseEntity<List<Task>> search(@RequestBody SearchTask search){
         return ResponseEntity.ok(this.taskService.find(search));
     }
-
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/search-page")
     public ResponseEntity<Page<Task>> searchPage(@RequestBody SearchTask search){
 
@@ -124,6 +131,7 @@ public class TaskController {
         // отправляем название класса ошибки (чтобы правильно обработать ошибку на клиенте)
         return new ResponseEntity(new JsonException(exception.getClass().getSimpleName()), HttpStatus.BAD_REQUEST);
     }
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/stats")
     public ResponseEntity<StatsObject> getStat(@RequestBody SearchTask search){
         return ResponseEntity.ok(this.taskService.getStat(search));

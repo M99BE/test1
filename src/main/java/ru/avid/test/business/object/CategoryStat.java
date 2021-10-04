@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.avid.test.business.entity.Category;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Setter @Getter
+@Getter @Setter
+@AllArgsConstructor
+
 public class CategoryStat {
     private Category category;
-    private Integer countTask;
+    private int countTask;
 }

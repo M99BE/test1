@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.avid.test.auth.entity.User;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -25,6 +26,9 @@ public class Priority {
     private String title;
     @Column
     private String color;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id") // по каким полям связывать (foreign key)
+    private User user;
     @OneToMany(mappedBy = "priority", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     private Collection<Task> tasks = new HashSet<>();
