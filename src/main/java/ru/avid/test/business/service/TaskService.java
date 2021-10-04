@@ -46,25 +46,26 @@ public class TaskService {
 //            return this.taskRepository.find(searchTask.getTitle(), searchTask.getCompleted());
 //        }
 //        return this.taskRepository.find(searchTask);
-        return this.taskRepository.find(searchTask.getTitle(), searchTask.getCategoryTitle(), searchTask.getPriorityId(), searchTask.getCompleted());
+        return this.taskRepository.find(searchTask.getUserId(), searchTask.getTitle(), searchTask.getCategoryTitle(), searchTask.getPriorityId(), searchTask.getCompleted());
     }
 
     public StatsObject getStat(SearchTask search){
         StatsObject stat = new StatsObject();
         int countCategoryTask;
-
-        int totalTask = countCategoryTask = this.taskRepository.findAll().size();
+        SearchTask tempSearch = new SearchTask();
+        tempSearch.setUserId(search.getUserId());
+        int totalTask = countCategoryTask = this.taskRepository.find(tempSearch).size();
         stat.setTotalTask(totalTask);
 
         if (search.getCategoryTitle().trim().length() == 0) {
             countCategoryTask = totalTask;
-            stat.setCompletedTask(this.taskRepository.countTaskByCompleted(true));
-            stat.setUncompletedTask(this.taskRepository.countTaskByCompleted(false));
+            stat.setCompletedTask(this.taskRepository.countTaskByCompletedAndUser_id(true, search.getUserId()));
+            stat.setUncompletedTask(this.taskRepository.countTaskByCompletedAndUser_id(false, search.getUserId()));
 
         } else {
-            countCategoryTask = this.taskRepository.countTaskByCategory_Title(search.getCategoryTitle());
-            stat.setCompletedTask(this.taskRepository.countTaskByCategory_TitleAndCompleted(search.getCategoryTitle(), true));
-            stat.setUncompletedTask(this.taskRepository.countTaskByCategory_TitleAndCompleted(search.getCategoryTitle(), false));
+            countCategoryTask = this.taskRepository.countTaskByCategory_TitleAndUser_Id(search.getCategoryTitle(), search.getUserId());
+            stat.setCompletedTask(this.taskRepository.countTaskByCategory_TitleAndCompletedAndUser_Id(search.getCategoryTitle(), true, search.getUserId()));
+            stat.setUncompletedTask(this.taskRepository.countTaskByCategory_TitleAndCompletedAndUser_Id(search.getCategoryTitle(), false, search.getUserId()));
         }
         stat.setTotalCategoryTask(countCategoryTask);
         return stat;
@@ -72,6 +73,6 @@ public class TaskService {
     public Page<Task> find(
             SearchTask searchTask,
             PageRequest paging){
-        return this.taskRepository.find(searchTask.getTitle(), searchTask.getCategoryTitle(), searchTask.getPriorityId(), searchTask.getCompleted(), paging);
+        return this.taskRepository.find(searchTask.getUserId(), searchTask.getTitle(), searchTask.getCategoryTitle(), searchTask.getPriorityId(), searchTask.getCompleted(), paging);
     }
 }

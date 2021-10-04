@@ -44,7 +44,7 @@ public class CategoryService {
         List<CategoryStat> categoryStatList = new ArrayList<>();
         List<Category> categoryList = this.categoryRepository.find(search);
         for (Category iter: categoryList) {
-            categoryStatList.add(new CategoryStat(iter, this.taskRepository.countTaskByCategory_Title(iter.getTitle())));
+            categoryStatList.add(new CategoryStat(iter, this.taskRepository.countTaskByCategory_TitleAndUser_Id(iter.getTitle(), search.getUserId())));
         }
         return categoryStatList;
     }

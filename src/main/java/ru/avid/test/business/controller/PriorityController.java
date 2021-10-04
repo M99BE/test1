@@ -95,11 +95,12 @@ public class PriorityController {
         }
         return ResponseEntity.ok(priority);
     }
-    @PreAuthorize("hasAuthority('USER')")
+//    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/search")
     public ResponseEntity<List<Priority>> search(@RequestBody SearchBase search){
         return ResponseEntity.ok(this.priorityService.search(search));
     }
+
     /*
 Метод перехватывает все ошибки в контроллере
 Даже без этого метода все ошибки будут отправляться клиенту, просто здесь это можно кастомизировать, например отправить JSON в нужном формате
