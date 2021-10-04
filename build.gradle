@@ -15,11 +15,11 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    all {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        exclude group: 'ch.q os.logback', module: 'logback-classic'
-        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
-    }
+//    all {
+//        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+//        exclude group: 'ch.q os.logback', module: 'logback-classic'
+//        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+//    }
 }
 
 repositories {
@@ -41,6 +41,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.32'
