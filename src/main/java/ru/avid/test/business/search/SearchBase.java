@@ -18,11 +18,6 @@ public class SearchBase {
     private String title = "";
     private long userId = 0L;
 
-    private Integer pageNumber;
-    private Integer pageSize;
-
-    private String sortColumn;
-    private String sortDirection;
 
     @JsonSetter("title")
     public void setTitle(String title) {
