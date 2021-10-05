@@ -2,11 +2,11 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'war'
+//    id 'war'
 }
-war {
-    enabled = true
-}
+//war {
+//    enabled = true
+//}
 group = 'ru.avid'
 version = '1.0.1'
 sourceCompatibility = '1.8'
@@ -15,11 +15,11 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    all {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        exclude group: 'ch.q os.logback', module: 'logback-classic'
-        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
-    }
+//    all {
+//        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+//        exclude group: 'ch.q os.logback', module: 'logback-classic'
+//        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+//    }
 }
 
 repositories {
@@ -36,11 +36,11 @@ dependencies {
     implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
 
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1' // библиотека для работы с jwt
-
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.1' // коннектор для БД PostgreSQL
     compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.32'
